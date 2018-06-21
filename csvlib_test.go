@@ -1,6 +1,9 @@
 package csvlib
 
-import "testing"
+import (
+	"testing"
+	"github.com/stretchr/testify/assert"
+)
 
 func TestBoolParser(t *testing.T) {
 	bp := BoolParser{}
@@ -27,4 +30,19 @@ func TestBoolParser(t *testing.T) {
 			t.Errorf("want: %t, got: %t", s.want, w)
 		}
 	}
+}
+
+func TestRowParser(t *testing.T) {
+	parser := RowParser{P: []Parser{
+		StringParser{},
+		Int64Parser{},
+		SkipParser{},
+	},
+	}
+	row, err := parser.Parse([]string{"123", "321", "333"})
+	assert.NoError(t, err)
+	assert.Len(t, row, 2)
+	assert.Equal(t,
+		[]interface{}{"123", int64(321)},
+		[]interface{}{row[0].String(), row[1].I64()})
 }

@@ -174,3 +174,13 @@ func (t TimeParser) Parse(val string) ([]ParsedValue, error) {
 func (TimeParser) Defaults() []ParsedValue {
 	return []ParsedValue{ParsedTime(time.Unix(0, 0))}
 }
+
+type SkipParser struct{}
+
+func (SkipParser) Parse(val string) ([]ParsedValue, error) {
+	return nil,nil
+}
+
+func (SkipParser) Defaults() []ParsedValue {
+	return nil
+}
