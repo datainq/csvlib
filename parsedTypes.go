@@ -1,6 +1,9 @@
 package csvlib
 
-import "time"
+import (
+	"time"
+	"github.com/ericlagergren/decimal"
+)
 
 type ParsedDefault struct{}
 
@@ -309,4 +312,17 @@ func (ParsedTime) Ifc() interface{} {
 
 func (ParsedTime) IsValid() bool {
 	return true
+}
+
+type ParsedDecimal struct {
+	ParsedDefault
+	b *decimal.Big
+}
+
+func (p ParsedDecimal) Ifc() interface{} {
+	return p.b
+}
+
+func (p ParsedDecimal) IsValid() bool {
+	return p.b != nil
 }

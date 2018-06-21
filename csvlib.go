@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/ericlagergren/decimal"
 )
 
 type Parser interface {
@@ -186,4 +187,25 @@ func (SkipParser) Parse(val string) ([]ParsedValue, error) {
 
 func (SkipParser) Defaults() []ParsedValue {
 	return nil
+}
+
+type DecimalParser struct {
+	value *decimal.Big
+}
+
+var ErrCannotParse = errors.New("cannot parse")
+
+func (d DecimalParser) Parse(val string) ([]ParsedValue, error) {
+	if val == "" {
+		return d.Defaults(), nil
+	}
+	b, ok := (&decimal.Big{}).SetString(val)
+	if !ok {
+		return nil, ErrCannotParse
+	}
+	return []ParsedValue{ParsedDecimal{b: b}}, nil
+}
+
+func (DecimalParser) Defaults() []ParsedValue {
+	return []ParsedValue{ParsedDecimal{}}
 }
