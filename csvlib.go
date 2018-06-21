@@ -175,7 +175,10 @@ func (TimeParser) Defaults() []ParsedValue {
 	return []ParsedValue{ParsedTime(time.Unix(0, 0))}
 }
 
-type SkipParser struct{}
+// Skips parsing one value.
+type SkipParser struct{
+	Name string
+}
 
 func (SkipParser) Parse(val string) ([]ParsedValue, error) {
 	return nil,nil
