@@ -190,6 +190,7 @@ func (SkipParser) Defaults() []ParsedValue {
 }
 
 type DecimalParser struct {
+	Name string
 	value *decimal.Big
 }
 
